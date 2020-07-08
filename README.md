@@ -2,13 +2,13 @@
 
 ## Usage
 ```dash
-npm i @uncley/rc-confused-project-modal
+npm install @ntes-ux-dev/rc-confused-project-modal
 ```
 
 ## Development
 ```dash
 # start
-npm i
+npm install
 npm start
 
 # build

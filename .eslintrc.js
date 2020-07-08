@@ -10,8 +10,9 @@ module.exports = {
         'react/prefer-stateless-function': 'off',
         'react/no-did-update-set-state': 0,
         '@typescript-eslint/no-use-before-define': ['error', { 'functions': false, 'classes': false }],
+        '@typescript-eslint/explicit-member-accessibility': ['off'],
         'max-classes-per-file': 'off',
         'react/no-access-state-in-setstate': 'off',
-        'jsx-a11y/anchor-is-valid': 'off'
+        'jsx-a11y/anchor-is-valid': 'off',
     }
 }

@@ -1,31 +1,38 @@
 import * as React from 'react'
 import { Modal } from 'antd'
 
+export interface ConfusedProjectModalContentItem {
+    project: string
+    items: string[]
+}
+
+interface ConfusedProjectModalDataItem {
+    project: string
+    items: { origin: string; confused: string }[]
+}
+
 export interface ConfusedProjectModalProps {
     visible?: boolean
     projects?: string[]
-    content?: { project: string; items: string[] }[]
+    content?: ConfusedProjectModalContentItem[]
     onConfirm?: () => void
     onCancel?: () => void
 }
 
 export interface ConfusedProjectModalState {
     modalVisible: boolean
-    confusedData: { project: string; items: { origin: string; confused: string }[] }[]
+    confusedData: ConfusedProjectModalDataItem[]
 }
 
-const noop = () => {}
+const noop = (): void => {}
 
 export function checkConfusedProject(
     projects: string[],
-    content: { project: string; items: string[] }[]
-): { project: string; items: { origin: string; confused: string }[] }[] {
-    const confusedData: {
-        project: string
-        items: { origin: string; confused: string }[]
-    }[] = []
+    content: ConfusedProjectModalContentItem[]
+): ConfusedProjectModalDataItem[] {
+    const confusedData: ConfusedProjectModalDataItem[] = []
 
-    const list = [...projects].sort((a, b) => b.length - a.length)
+    const list = [...projects].sort((a, b): number => b.length - a.length)
 
     for (const { project, items } of content) {
         const reg = new RegExp(project, 'gi')
@@ -60,7 +67,10 @@ export function checkConfusedProject(
     return confusedData
 }
 
-export default class ConfusedProjectModal extends React.Component<ConfusedProjectModalProps, ConfusedProjectModalState> {
+export default class ConfusedProjectModal extends React.Component<
+    ConfusedProjectModalProps,
+    ConfusedProjectModalState
+> {
     constructor(props: ConfusedProjectModalProps) {
         super(props)
         this.state = {
@@ -70,7 +80,12 @@ export default class ConfusedProjectModal extends React.Component<ConfusedProjec
     }
 
     componentDidUpdate(prevProps: ConfusedProjectModalProps): void {
-        const { visible, projects = [], content = [], onConfirm = noop } = this.props
+        const {
+            visible,
+            projects = [],
+            content = [],
+            onConfirm = noop
+        } = this.props
         if (!prevProps.visible && visible) {
             const data = checkConfusedProject(projects, content)
             if (data.length) {
@@ -107,31 +122,33 @@ export default class ConfusedProjectModal extends React.Component<ConfusedProjec
             >
                 <div className="rc-confused-project-container">
                     以下工作内容中，填写了与所选项目<b>冲突</b>的项目编号：
-                    {confusedData.map((group, index) => (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <div key={index}>
-                            <br />
-                            {group.project}:
-                            {group.items.map((item) => (
-                                <div
-                                    key={item.origin}
-                                >
-                                    <span
-                                        // eslint-disable-next-line react/no-danger
-                                        dangerouslySetInnerHTML={{
-                                            __html: item.origin.replace(
-                                                new RegExp(
-                                                    `(${item.confused})`,
-                                                    'g'
-                                                ),
-                                                '<b class="text-red">$1</b>'
-                                            )
-                                        }}
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    ))}
+                    {confusedData.map(
+                        (group, index): React.ReactNode => (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <div key={index}>
+                                <br />
+                                {group.project}:
+                                {group.items.map(
+                                    (item): React.ReactNode => (
+                                        <div key={item.origin}>
+                                            <span
+                                                // eslint-disable-next-line react/no-danger
+                                                dangerouslySetInnerHTML={{
+                                                    __html: item.origin.replace(
+                                                        new RegExp(
+                                                            `(${item.confused})`,
+                                                            'g'
+                                                        ),
+                                                        '<b class="text-red">$1</b>'
+                                                    )
+                                                }}
+                                            />
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                        )
+                    )}
                     <br />
                     请检查是否填写错误，如有错误请更正，如正常请点击提交。
                 </div>

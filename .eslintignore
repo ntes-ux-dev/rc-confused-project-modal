@@ -1,3 +1,5 @@
 /*.*.js
 /build
 /public
+lib
+es

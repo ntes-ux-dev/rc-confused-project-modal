@@ -1,0 +1,43 @@
+{
+  "name": "@uncley/rc-confused-project-modal",
+  "version": "0.1.2",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "./es/index",
+  "files": [
+    "es",
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "father build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@gitlab.nie.netease.com:32200/uncle-y/rc-confused-project-modal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.10.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-uncley": "^0.1.6",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
+    "father": "^2.29.5",
+    "prettier": "^2.0.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}

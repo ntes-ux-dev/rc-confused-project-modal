@@ -1,12 +1,14 @@
 import * as React from 'react'
 import { Modal } from 'antd'
 
-export interface ConfusedProjectModalContentItem {
+// eslint-disable-next-line @typescript-eslint/prefer-interface
+export type ConfusedProjectModalContentItem = {
     project: string
     items: string[]
 }
 
-interface ConfusedProjectModalDataItem {
+// eslint-disable-next-line @typescript-eslint/prefer-interface
+type ConfusedProjectModalDataItem = {
     project: string
     items: { origin: string; confused: string }[]
 }
@@ -14,6 +16,7 @@ interface ConfusedProjectModalDataItem {
 export interface ConfusedProjectModalProps {
     visible?: boolean
     projects?: string[]
+    excludeProjects?: string[]
     content?: ConfusedProjectModalContentItem[]
     onConfirm?: () => void
     onCancel?: () => void
@@ -28,11 +31,14 @@ const noop = (): void => {}
 
 export function checkConfusedProject(
     projects: string[],
-    content: ConfusedProjectModalContentItem[]
+    content: ConfusedProjectModalContentItem[],
+    excludeProjects = ['DEMO']
 ): ConfusedProjectModalDataItem[] {
     const confusedData: ConfusedProjectModalDataItem[] = []
 
-    const list = [...projects].sort((a, b): number => b.length - a.length)
+    const list = [...projects]
+        .filter((p): boolean => !excludeProjects.includes(p.toUpperCase()))
+        .sort((a, b): number => b.length - a.length)
 
     for (const { project, items } of content) {
         const reg = new RegExp(project, 'gi')
@@ -40,11 +46,11 @@ export function checkConfusedProject(
         const confusedItems: { origin: string; confused: string }[] = []
 
         for (const item of items) {
-            const s = item.toLowerCase().replace(reg, rep)
+            const s = item.toUpperCase().replace(reg, rep)
 
             for (const p of list) {
                 if (!p) continue
-                const pl = p.toLowerCase()
+                const pl = p.toUpperCase()
                 const i = s.indexOf(pl)
                 if (i >= 0) {
                     confusedItems.push({
@@ -83,11 +89,16 @@ export default class ConfusedProjectModal extends React.Component<
         const {
             visible,
             projects = [],
+            excludeProjects,
             content = [],
             onConfirm = noop
         } = this.props
         if (!prevProps.visible && visible) {
-            const data = checkConfusedProject(projects, content)
+            const data = checkConfusedProject(
+                projects,
+                content,
+                excludeProjects
+            )
             if (data.length) {
                 this.setState({
                     modalVisible: true,

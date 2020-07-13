@@ -1,7 +1,7 @@
 {
   "name": "@ntes-ux-dev/rc-confused-project-modal",
-  "version": "0.1.4",
-  "description": "",
+  "version": "0.1.5",
+  "description": "Confused project modal for react.",
   "main": "lib/index.js",
   "module": "./es/index",
   "files": [
